@@ -1,0 +1,267 @@
+//
+//  Eli Gatchalian
+//  HackerRankSolutions
+//
+//  Copyright © 2019 Eli Gatchalian. All rights reserved.
+//
+//
+//   Hi everyone! I'm a software engineer and I decided to compile my solutions to
+//   some of the problems posted on leetcode.com using C++. I have provided time
+//   and space complexity for each problem. Feel free to message me if you see something
+//   confusing or wrong!
+//
+
+// Definition for singly-linked list.
+struct SinglyLinkedListNode {
+    int data;
+    SinglyLinkedListNode* next;
+};
+
+#include <vector>
+#include <unordered_map>
+#include <queue>
+#include <iostream>
+using namespace std;
+
+int main(int argc, const char * argv[]) {
+    // insert code here...
+    cout << "Hello, World!\n";
+    return 0;
+}
+
+//
+//  Equalize the Array - Easy
+//
+//  Karl has an array of integers. He wants to reduce the array until all remaining elements
+//  are equal. Determine the minimum number of elements to delete to reach his goal.
+//
+//  For example, if his array is arr = [1,2,2,3], we see that he can delete the 2 elements 1 and 3
+//  leaving arr = [2,2]. He could also delete both twos and either the 1 or the 3, but that would
+//  take 3 deletions. The minimum number of deletions is 2.
+//
+//  Big(O) -> O(n), where n = size of the array
+//  Memory -> O(n), where n = size of the array
+//
+
+int equalizeArray(vector<int> arr) {
+    int maxOccurence = 0, size = (int)arr.size();
+    unordered_map<int,int> numToOccurence;
+    
+    for(int i = 0; i < size; i++){
+        numToOccurence[arr[i]]++;
+        if(numToOccurence[arr[i]] > maxOccurence){
+            maxOccurence = numToOccurence[arr[i]];
+        }
+    }
+    
+    return size - maxOccurence;
+}
+
+//  Counting Valleys - Easy
+//
+//  Gary is an avid hiker. He tracks his hikes meticulously, paying close attention to small
+//  details like topography. During his last hike he took exactly n steps. For every step he
+//  took, he noted if it was uphill, U, or a downhill, D step. Gary's hike starts and end at
+//  sea level and each step up or down represents a 1 unit change in altitude. We define
+//  the following terms:
+//
+//  - A mountain is a sequence of consecutive steps above sea level, starting with a step up from
+//  sea level and ending with a step down to sea level.
+//  - A valley is a sequence of consecutive steps below sea level, starting with a step down from
+//  sea level and ending with a step up to sea level.
+//
+//  Given Gary's sequence of up and down steps during his last hike, find and print the number of
+//  valleys he walked through.
+//
+//  For example, if Gary's path is s = [DDUUUDD], he first enters a valley 2 units deep. Then he
+//  climbs out an up onto a mountain 2 units high. Finally, he returns to sea level and ends his
+//  hike.
+//
+//  Big(O) -> O(n), where n = the amount of steps taken/size of the string
+//  Memory -> O(1)
+//
+
+int countingValleys(int n, string s) {
+    int altitude = 0, valleys = 0;
+    for(int step = 0; step < s.length(); step++){
+        if(s[step] == 'U') altitude++;
+        else altitude--;
+        
+        if(altitude == 0 && s[step] == 'U') valleys++;
+    }
+    return valleys;
+}
+
+//
+//  Pairs - Medium
+//  You will be given an array of integers and a target value. Determine the number of pairs
+//  of array elements that have a difference equal to a target value.
+//
+//  For example, given an array of [1,2,3,4] and a target value of 1, we have three values
+//  meeting the condition: 2 - 1 = 1, 3 - 2 = 1, and 4 - 3 = 1.
+//
+//  Big(O) -> O(n), where n = size of the array
+//  Memory -> O(n), where n = size of the array
+//
+
+int pairs(int k, vector<int> arr) {
+    int numPairs = 0;
+    unordered_map<int,int> numbers;
+    
+    for(int i = 0; i < arr.size(); i++){
+        auto it = numbers.find(arr[i]);
+        if(it == numbers.end()) numbers[arr[i]] = 1;
+        else return -1; // invalid entry
+    }
+    
+    for(int i = 0; i < arr.size(); i++){
+        int target = arr[i] + k;
+        auto it = numbers.find(target);
+        if(it != numbers.end() && it->first != arr[i]) numPairs++;
+    }
+    
+    return numPairs;
+}
+
+//
+//  Connected Cells in a Grid - Medium
+//
+//  Consider a matrix where each cell contains either a 0 or a 1. Any cell containing a 1 is called
+//  a filled cell. Two cells are said to be connected if they are adjacent to each other
+//  horizontally, vertically, or diagonally. In the following grid, all cells marked X are
+//  connected to the cell marked Y.
+//
+//  XXX
+//  XYX
+//  XXX
+//
+//  If one or more filled cells are also connected, they form a region. Note that each cell in a
+//  region is connected to zero or more cells in the region but is not necessarily directly
+//  connected to all the other cells in the region.
+//
+//  Given an n x m matrix, find and print the number of cells in the largest region in the matrix.
+//  Note that there may be more than one region in the matrix.
+//
+//  For example, there are two regions in the following 3 x 3 matrix. The larger region at the top
+//  left contains 3 cells. The smaller one at the bottom right contains 1.
+//
+//  110
+//  100
+//  001
+//
+//  Big(O) -> O((n + m)^2), where n and m are the dimensions of the matrix
+//  Memory -> O(1)
+//
+
+bool valid(const vector<vector<int>> matrix, const int x, const int y){
+    return (x >= 0 && x < matrix.size() && y >= 0 && y < matrix[0].size() && matrix[x][y] == 1);
+}
+
+void findRegions(vector<vector<int>> &matrix, const int x, const int y, int &regionSize){
+    if(!valid(matrix, x, y)) return;
+    
+    regionSize++;
+    
+    matrix[x][y] = 0;
+    
+    for(int i = -1; i <= 1; i++){
+        for(int j = -1; j <= 1; j++){
+            findRegions(matrix, x + i, y + j, regionSize);
+        }
+    }
+}
+
+int connectedCell(vector<vector<int>> matrix){
+    int maxRegion = 0;
+    for(int i = 0; i < matrix.size(); i++){
+        for(int j = 0; j < matrix[0].size(); j++){
+            int currentRegion = 0;
+            findRegions(matrix, i, j, currentRegion);
+            if(currentRegion > maxRegion) maxRegion = currentRegion;
+        }
+    }
+    return maxRegion;
+}
+
+//
+//  Minimum Absolute Difference in an Array - Easy
+//
+//  Consider an array of integers, arr = [arr[0], arr[1],..., arr[n - 1]]. We define the absolute
+//  difference between two elements, a[i] and a[j] (where i != j), to be the absolute value of
+//  a[i] - a[j].
+//
+//  Given an array of integers, find and print the minimum absolute difference between any two
+//  elements in the array. For example, given the array arr = [-2,2,4] we can create 3 pairs of
+//  numbers: [-2,2], [-2,4] and [2,4]. The absolute differences for these pairs are |(-2) - 2| = 4,
+//  |(-2) - 4| = 6 and |2 - 4| = 2. The minimum absolute difference is 2.
+//
+//  Big(O) -> O(nlogn), where n = the size of the array
+//  Memory -> O(1)
+//
+
+int minimumAbsoluteDifference(vector<int> arr){
+    sort(arr.begin(), arr.end());
+    int minimumDifference = INT_MAX;
+    for(int i = 0; i < arr.size(); i++){
+        if(abs(arr[i] - arr[i + 1]) < minimumDifference){
+            minimumDifference = abs(arr[i] - arr[i + 1]);
+        }
+    }
+    return minimumDifference;
+}
+
+//
+//  Sparse Arrays - Medium
+//
+//  There is a collection of input strings and a collection of query strings. For each query
+//  string, determine how many times it occurs in the list of input strings.
+//
+//  For example, given input strings = ['ab', 'ab', 'abc'] and queries = ['ab', 'abc', 'bc'],
+//  we find 2 instances of 'ab', 1 of 'abc' and 0 of 'bc'. For each query, we add an element
+//  to our return array results, results = [2,1,0].
+//
+//  Big(O) -> O(s + q), where s and q are the sizes of the 'strings' and 'queries' arrays
+//  Memory -> O(s), where s is the size of the 'strings' array
+//
+
+vector<int> matchingStrings(vector<string> strings, vector<string> queries) {
+    unordered_map<string,int> words;
+    for(int i = 0; i < strings.size(); i++){
+        words[strings[i]]++;
+    }
+    
+    vector<int> results;
+    for(int i = 0; i < queries.size(); i++){
+        results.push_back(words[queries[i]]);
+    }
+    return results;
+}
+
+//
+//  Cycle Detection - Medium
+//
+//  A linked list is said to contain a cycle if any node is visted more than once while
+//  traversing the list.
+//
+//  Complete the function provided for you in your editor. It has one parameter: a pointer
+//  to a Node object named head that points to the head of a linked list. Your function must
+//  return a boolean denoting whether or not there is a cycle in the list. If there is a cycle,
+//  return true; otherwise, return false.
+//
+//  Note: If the list is empty, head will be null.
+//
+//  Big(O) -> O(n), where n = size of the linked list
+//  Memory -> O(n), where n = size of the linked list
+
+bool has_cycle(SinglyLinkedListNode* head) {
+    SinglyLinkedListNode *slow, *fast;
+    slow = head;
+    fast = head;
+    
+    while(fast != nullptr && fast->next != nullptr){
+        fast = fast->next->next;
+        slow = slow->next;
+        if(fast == slow) return true;
+    }
+    return false;
+}
