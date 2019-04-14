@@ -252,6 +252,7 @@ vector<int> matchingStrings(vector<string> strings, vector<string> queries) {
 //
 //  Big(O) -> O(n), where n = size of the linked list
 //  Memory -> O(n), where n = size of the linked list
+//
 
 bool has_cycle(SinglyLinkedListNode* head) {
     SinglyLinkedListNode *slow, *fast;
