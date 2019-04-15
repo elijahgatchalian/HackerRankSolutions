@@ -30,6 +30,100 @@ int main(int argc, const char * argv[]) {
 }
 
 //
+//  Simple Array Sum - Easy
+//
+//  Given an array of integers, find the sum of its elements.
+//  For example, if the array ar = [1,2,3], 1 + 2 + 3 = 6, so return 6.
+//
+//  Big(O) -> O(n), where n = size of the array
+//  Memory -> O(1)
+//
+
+int simpleArraySum(vector<int> ar){
+    int sum = 0;
+    for(int i = 0; i < ar.size(); i++){
+        sum += ar[i];
+    }
+    return sum;
+}
+
+//
+//  Diagonal Difference - Easy
+//
+//  Given a square matrix, calculate the absolute difference between the sum of its diagonals.
+//
+//  For example, the square matrix arr is shown below:
+//
+//  123
+//  456
+//  989
+//
+//  The left-to-right diagonal = 1 + 5 + 9 = 15. The right to left diagonal = 3 + 5 + 9 = 17.
+//  Their absolute difference is |15 - 17| = 2.
+//
+//  Big(O) -> O(r), where r = how many rows are in the 2D array
+//  Memory -> O(1)
+//
+
+int diagonalDifference(vector<vector<int>> arr) {
+    int leftToRightDiagonal = 0, rightToLeftDiagonal = 0;
+    int size = arr.size();
+    
+    for(int i = 0; i < size; i++){
+        leftToRightDiagonal += arr[i][i];
+        rightToLeftDiagonal += arr[size - 1 - i][i];
+    }
+    
+    return abs(leftToRightDiagonal - rightToLeftDiagonal);
+}
+
+//
+//  Climbing the Leaderboard - Medium
+//
+//  Alice is playing an arcade game and wants to climb to the top of the leaderboard and wants to
+//  track her ranking. The game uses Dense Ranking, so its leaderboard works like this:
+//
+//  - The player with the highest scores is ranked number 1 on the leaderboard.
+//  - Players who have equal scores receive the same ranking number, and the next player(s) receive
+//  the immediately following ranking number.
+//
+//  For example, the four players on the leaderboard have high scores 100, 90, 90, and 80. Those
+//  players will have ranks 1, 2, 2, and 3 respectively. If Alice's scores are 70, 80, and 105,
+//  her rankings after each game are 4th, 3rd, and 1st.
+//
+//  Big(O) -> O(max(s,a)), where s and a = the sizes of the 'scores' and 'alice' arrays
+//  Memory -> O(max(s,a)), where s and a = the sizes of the 'scores' and 'alice' arrays
+//
+
+void createUniqueScores(vector<int> &uniqueScores, const vector<int> scores){
+    int prevNum = -1;
+    for(int i = scores.size() - 1; i >= 0; i--){
+        if(scores[i] != prevNum){
+            uniqueScores.push_back(scores[i]);
+            prevNum = scores[i];
+        }
+    }
+}
+
+vector<int> aliceRanks(const vector<int> uniqueScores, const vector<int> alice){
+    vector<int> ranks;
+    int maxRank = uniqueScores.size(), j = 0;
+    for(int i = 0; i < alice.size(); i++){
+        while(j < maxRank && alice[i] > uniqueScores[j]) j++;
+        int currentRank = maxRank - j;
+        if(alice[i] != uniqueScores[j]) currentRank++;
+        ranks.push_back(currentRank);
+    }
+    return ranks;
+}
+
+vector<int> climbingLeaderboard(vector<int> scores, vector<int> alice) {
+    vector<int> uniqueScores;
+    createUniqueScores(uniqueScores, scores);
+    return aliceRanks(uniqueScores, alice);
+}
+
+//
 //  Equalize the Array - Easy
 //
 //  Karl has an array of integers. He wants to reduce the array until all remaining elements
