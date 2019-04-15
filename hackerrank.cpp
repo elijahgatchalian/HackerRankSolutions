@@ -221,7 +221,7 @@ int minimumAbsoluteDifference(vector<int> arr){
 //  we find 2 instances of 'ab', 1 of 'abc' and 0 of 'bc'. For each query, we add an element
 //  to our return array results, results = [2,1,0].
 //
-//  Big(O) -> O(s + q), where s and q are the sizes of the 'strings' and 'queries' arrays
+//  Big(O) -> O(max(s,q)), where s and q are the sizes of the 'strings' and 'queries' arrays
 //  Memory -> O(s), where s is the size of the 'strings' array
 //
 
