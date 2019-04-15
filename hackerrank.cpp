@@ -57,6 +57,7 @@ int equalizeArray(vector<int> arr) {
     return size - maxOccurence;
 }
 
+//
 //  Counting Valleys - Easy
 //
 //  Gary is an avid hiker. He tracks his hikes meticulously, paying close attention to small
