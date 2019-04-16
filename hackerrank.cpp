@@ -67,7 +67,7 @@ int simpleArraySum(vector<int> ar){
 
 int diagonalDifference(vector<vector<int>> arr) {
     int leftToRightDiagonal = 0, rightToLeftDiagonal = 0;
-    int size = arr.size();
+    int size = (int)arr.size();
     
     for(int i = 0; i < size; i++){
         leftToRightDiagonal += arr[i][i];
@@ -97,7 +97,7 @@ int diagonalDifference(vector<vector<int>> arr) {
 
 void createUniqueScores(vector<int> &uniqueScores, const vector<int> scores){
     int prevNum = -1;
-    for(int i = scores.size() - 1; i >= 0; i--){
+    for(int i = (int)scores.size() - 1; i >= 0; i--){
         if(scores[i] != prevNum){
             uniqueScores.push_back(scores[i]);
             prevNum = scores[i];
@@ -107,7 +107,7 @@ void createUniqueScores(vector<int> &uniqueScores, const vector<int> scores){
 
 vector<int> aliceRanks(const vector<int> uniqueScores, const vector<int> alice){
     vector<int> ranks;
-    int maxRank = uniqueScores.size(), j = 0;
+    int maxRank = (int)uniqueScores.size(), j = 0;
     for(int i = 0; i < alice.size(); i++){
         while(j < maxRank && alice[i] > uniqueScores[j]) j++;
         int currentRank = maxRank - j;
