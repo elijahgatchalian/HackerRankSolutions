@@ -549,3 +549,80 @@ vector<double> runningMedian(vector<int> a) {
     
     return allMedians;
 }
+
+//
+//  Snakes and Ladders: The Quickest Way Up - Medium
+//
+//  Markov takes out his Snakes and Ladders game, stares at the board and wonders: "If I can always
+//  roll the die to whatever number I want, what would be the least number of rolls to reach the
+//  destination?"
+//
+//  Rules The game is played with a cubic die of 6 faces numbered 1 to 6.
+//
+//  1. Starting from square 1, land on square 100 with the exact roll of the die. If moving the
+//  number rolled would place the player beyond square 100, no move is made.
+//  2. If a player lands at the base of a ladder, the player must climb the ladder. Ladders go up
+//  only.
+//  3. If a player lands at the mouth of a snake, the player must go down the snake and come out
+//  through the tail. Snakes go down only.
+//
+//  Big(O) -> O(max(max(100,l),s)), where l and s are the sizes of ladders and snakes
+//  Memory -> O(1), the game board will never exceed a size of 100
+//
+
+void setupBoard(vector<int> &board, const vector<vector<int>> ladders, const vector<vector<int>> snakes){
+    //  Input:
+    //      - board: An empty vector of integers representing the game board
+    //      - ladders: A 2D vector of integers representing where to move to if a ladder has been reached
+    //      - snakes: A 2D vector of integers representing where to move to if a snake has been reached
+    //  Output: No output but creates the game board via pass-by-reference
+    for(int i = 0; i < 100; i++){
+        board[i] = i;
+    }
+    for(int i = 0; i < ladders.size(); i++){
+        board[ladders[i][0] - 1] = ladders[i][1] - 1;
+    }
+    for(int i = 0; i < snakes.size(); i++){
+        board[snakes[i][0] - 1] = snakes[i][1] - 1;
+    }
+}
+
+int moveThroughBoard(vector<int> distanceToGetToIndex, const vector<int> board){
+    //  Input:
+    //      - distanceToGetToIndex: A vector of integers on the distance it took to reach
+    //                              the current index
+    //      - board: A vector of integers representing the game board
+    //  Output: An integer of the distance it took to reach the end of the game board. Returns
+    //          -1 if not possible.
+    queue<int> positions;
+    positions.push(0);
+    
+    while(!positions.empty()){
+        int currentPos = positions.front();
+        positions.pop();
+        for(int i = currentPos + 1; i <= currentPos + 6; i++){
+            if(distanceToGetToIndex[board[i]] == 0){
+                positions.push(board[i]);
+                distanceToGetToIndex[board[i]] = distanceToGetToIndex[currentPos] + 1;
+                if(board[i] == 99) return distanceToGetToIndex[board[i]];
+            }
+        }
+    }
+    
+    return -1;
+}
+
+int quickestWayUp(vector<vector<int>> ladders, vector<vector<int>> snakes) {
+    //  Input:
+    //      - ladders: A 2D vector of integers of the beginning and end positions
+    //                 of the ladder
+    //      - snakes: A 2D vector of integers of the beginning and end positions
+    //                of the snake
+    //  Output: An integer of the quickest way to reach the end of the game board
+    vector<int> distanceToGetToIndex(100), board(100);
+    
+    setupBoard(board, ladders, snakes);
+    int shortestDistance = moveThroughBoard(distanceToGetToIndex, board);
+    
+    return shortestDistance;
+}
