@@ -41,6 +41,7 @@ int main(int argc, const char * argv[]) {
 //
 
 int simpleArraySum(vector<int> ar){
+    //  Purpose: Take the sum of the entire array
     //  Input: A vector of integers
     //  Output: An integer of the summation of values in the array
     int sum = 0;
@@ -69,6 +70,7 @@ int simpleArraySum(vector<int> ar){
 //
 
 int diagonalDifference(vector<vector<int>> arr) {
+    //  Purpose: Find the absolute diagonal difference of the 2D vector
     //  Input: A 2D-Array of integers
     //  Output: An integer of the difference between the diagonal summation
     int leftToRightDiagonal = 0, rightToLeftDiagonal = 0;
@@ -102,6 +104,7 @@ int diagonalDifference(vector<vector<int>> arr) {
 //
 
 void createUniqueScores(vector<int> &uniqueScores, const vector<int> scores){
+    //  Purpose: Find all unique scores in 'scores'
     //  Input:
     //      - uniqueScores: an empty vector
     //      - scores: a sorted vector of integers from greatest to least
@@ -116,6 +119,7 @@ void createUniqueScores(vector<int> &uniqueScores, const vector<int> scores){
 }
 
 vector<int> aliceRanks(const vector<int> uniqueScores, const vector<int> alice){
+    //  Purpose: Calculate alice's score ranks after each game
     //  Input:
     //      - uniqueScores: unique integers
     //      - alice: a sorted vector of integers from least to greatest
@@ -132,6 +136,11 @@ vector<int> aliceRanks(const vector<int> uniqueScores, const vector<int> alice){
 }
 
 vector<int> climbingLeaderboard(vector<int> scores, vector<int> alice) {
+    //  Purpose: Figure out alice's rank after each game
+    //  Input:
+    //      - scores: A vector of integers of the current leaderboard
+    //      - alice: A vector of integers of alice's scores
+    //  Output: A vector of integers of alice's ranking after each of her game
     vector<int> uniqueScores;
     createUniqueScores(uniqueScores, scores);
     return aliceRanks(uniqueScores, alice);
@@ -152,6 +161,7 @@ vector<int> climbingLeaderboard(vector<int> scores, vector<int> alice) {
 //
 
 int equalizeArray(vector<int> arr) {
+    //  Purpose: Equalize the array
     //  Input: A vector of integers
     //  Output: An integer of the minimum amount of deletions it would take to equalize the array
     int maxOccurence = 0, size = (int)arr.size();
@@ -191,7 +201,8 @@ int equalizeArray(vector<int> arr) {
 //
 
 int countingValleys(int n, string s) {
-    //  Input: 
+    //  Purpose: Count the valleys in the input string
+    //  Input:
     //      - n: An integer of how long the input string is
     //      - s: A string of Ds and Us representing uphill/downhill steps
     //  Output: An integer representing how many valleys have been hiked
@@ -221,6 +232,7 @@ int countingValleys(int n, string s) {
 //
 
 int pairs(int k, vector<int> arr) {
+    //  Purpose: Find the amount of pairs that sum up to the target value
     //  Input:
     //      - k: An integer representing the target value
     //      - arr: A vector of integers
@@ -274,6 +286,7 @@ int pairs(int k, vector<int> arr) {
 //
 
 bool valid(const vector<vector<int>> matrix, const int x, const int y){
+    //  Purpose: Validate the coordinates in the grid
     //  Input:
     //      - matrix: A 2D vector of integers representing a grid
     //      - x: An integer representing an x-coordinate in the grid
@@ -283,7 +296,8 @@ bool valid(const vector<vector<int>> matrix, const int x, const int y){
 }
 
 void findRegions(vector<vector<int>> &matrix, const int x, const int y, int &regionSize){
-    //  Input: 
+    //  Purpose: Calculate the sizes of each region in the grid
+    //  Input:
     //      - matrix: A 2D vector of integers representing a grid
     //      - x: An integer representing an x-coordinate in the grid
     //      - y: An integer representing a y-coordinate in the grid
@@ -306,6 +320,7 @@ void findRegions(vector<vector<int>> &matrix, const int x, const int y, int &reg
 }
 
 int connectedCell(vector<vector<int>> matrix){
+    //  Purpose: Find the largest region in the grid
     //  Input: A 2D vector of integers representing a grid
     //  Output: An integer representing the largest region found in the input vector
     int maxRegion = 0;
@@ -338,6 +353,7 @@ int connectedCell(vector<vector<int>> matrix){
 //
 
 int minimumAbsoluteDifference(vector<int> arr){
+    //  Purpose: Find the minimum absolute difference between the values in the input vector
     //  Input: An array of integers
     //  Output: An integer representing the minimum difference between values in the input vector
     sort(arr.begin(), arr.end());
@@ -367,6 +383,7 @@ int minimumAbsoluteDifference(vector<int> arr){
 //
 
 vector<int> matchingStrings(vector<string> strings, vector<string> queries) {
+    //  Purpose: Find how many times a value in queries appear in strings
     //  Input:
     //      - strings: A vector of strings. There can be duplicate values in here.
     //      - queries: A vector of strings. No duplicate values.
@@ -405,6 +422,7 @@ vector<int> matchingStrings(vector<string> strings, vector<string> queries) {
 //
 
 bool has_cycle(SinglyLinkedListNode* head) {
+    //  Purpose: Identify if the singly linked list is circular
     //  Input: A singly linked list
     //  Output: A boolean representing whether or not the list is circular
     SinglyLinkedListNode *slow, *fast;
@@ -450,6 +468,7 @@ bool has_cycle(SinglyLinkedListNode* head) {
 //
 
 bool match(char leftBracket, char rightBracket){
+    //  Purpose: Validate if the brackets complete each other
     //  Input:
     //      - leftBracket: A character representing (, {, or [
     //      - rightBracket: A character representing ), }, or ]
@@ -461,6 +480,7 @@ bool match(char leftBracket, char rightBracket){
 }
 
 string isBalanced(string s) {
+    //  Purpose: Identify if the input string has all matching brackets
     //  Input: A string consisting of (,{,[,],}, and )
     //  Output: A YES/NO message representing that all brackets have succesfully closed
     stack<char> leftBrackets; //    A stack of characters for (,{,[
@@ -500,22 +520,24 @@ string isBalanced(string s) {
 //
 
 void addToHeaps(const double currentNum, const double median, priority_queue<double> &maxHeap, priority_queue<double, vector<double>, greater<double>> &minHeap){
+    //  Purpose: Push the current number onto the appropriate heap
     //  Input:
     //      - currentNum: A double representing the current number
     //      - median: A double representing the median value
     //      - maxHeap: A max heap of double values
     //      - minHeap: A min heap of double values
-    //  Output: No output but pushes currentNum onto either maxHeap or minHeap depeneding on 
+    //  Output: No output but pushes currentNum onto either maxHeap or minHeap depeneding on
     //          if the currentNum is less than or equal to the median
     if(currentNum <= median) maxHeap.push(currentNum);
     else minHeap.push(currentNum);
 }
 void changeHeapSizes(priority_queue<double> &maxHeap, priority_queue<double, vector<double>, greater<double>> &minHeap){
+    //  Purpose: Change the heap size so that no heap is larger than the other by 2
     //  Input:
     //      - maxHeap: A max heap of double values
     //      - minHeap: A min heap of double values
-    //  Output: No output but pushes the top value from one heap to the other heap depending on 
-    //          the sizes of the heaps. Either heap should not be greater than 2. Once this has been done, 
+    //  Output: No output but pushes the top value from one heap to the other heap depending on
+    //          the sizes of the heaps. Either heap should not be greater than 2. Once this has been done,
     //          the top value is popped off the heap.
     if(maxHeap.size() > minHeap.size() + 1){
         minHeap.push(maxHeap.top());
@@ -527,6 +549,7 @@ void changeHeapSizes(priority_queue<double> &maxHeap, priority_queue<double, vec
 }
 
 vector<double> runningMedian(vector<int> a) {
+    //  Purpose: Find the running median as we walk through the input vector
     //  Input: A vector of integers
     //  Output: A vector of doubles of all median values
     priority_queue<double, vector<double>, greater<double>> minHeap;
@@ -571,6 +594,7 @@ vector<double> runningMedian(vector<int> a) {
 //
 
 void setupBoard(vector<int> &board, const vector<vector<int>> ladders, const vector<vector<int>> snakes){
+    //  Purpose: Create the game board based on the ladders and snakes 2D vectors
     //  Input:
     //      - board: An empty vector of integers representing the game board
     //      - ladders: A 2D vector of integers representing where to move to if a ladder has been reached
@@ -588,6 +612,7 @@ void setupBoard(vector<int> &board, const vector<vector<int>> ladders, const vec
 }
 
 int moveThroughBoard(vector<int> distanceToGetToIndex, const vector<int> board){
+    //  Purpose: Move through the board until we reach the game
     //  Input:
     //      - distanceToGetToIndex: A vector of integers on the distance it took to reach
     //                              the current index
@@ -613,6 +638,7 @@ int moveThroughBoard(vector<int> distanceToGetToIndex, const vector<int> board){
 }
 
 int quickestWayUp(vector<vector<int>> ladders, vector<vector<int>> snakes) {
+    //  Purpose: Find the quickest way to complete the game
     //  Input:
     //      - ladders: A 2D vector of integers of the beginning and end positions
     //                 of the ladder
