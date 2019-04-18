@@ -41,6 +41,8 @@ int main(int argc, const char * argv[]) {
 //
 
 int simpleArraySum(vector<int> ar){
+    //  Input: A vector of integers
+    //  Output: An integer of the summation of values in the array
     int sum = 0;
     for(int i = 0; i < ar.size(); i++){
         sum += ar[i];
@@ -67,9 +69,12 @@ int simpleArraySum(vector<int> ar){
 //
 
 int diagonalDifference(vector<vector<int>> arr) {
+    //  Input: A 2D-Array of integers
+    //  Output: An integer of the difference between the diagonal summation
     int leftToRightDiagonal = 0, rightToLeftDiagonal = 0;
     int size = (int)arr.size();
     
+    //  Take the summation of both diagonals while walking through the array once
     for(int i = 0; i < size; i++){
         leftToRightDiagonal += arr[i][i];
         rightToLeftDiagonal += arr[size - 1 - i][i];
@@ -97,6 +102,10 @@ int diagonalDifference(vector<vector<int>> arr) {
 //
 
 void createUniqueScores(vector<int> &uniqueScores, const vector<int> scores){
+    //  Input:
+    //      - uniqueScores: an empty vector
+    //      - scores: a sorted vector of integers from greatest to least
+    //  Output: No output but changes uniqueScores to have unique values from the scores vector
     int prevNum = -1;
     for(int i = (int)scores.size() - 1; i >= 0; i--){
         if(scores[i] != prevNum){
@@ -107,6 +116,10 @@ void createUniqueScores(vector<int> &uniqueScores, const vector<int> scores){
 }
 
 vector<int> aliceRanks(const vector<int> uniqueScores, const vector<int> alice){
+    //  Input:
+    //      - uniqueScores: unique integers
+    //      - alice: a sorted vector of integers from least to greatest
+    //  Output: Outputs a vector of alice's ranking after each of her games
     vector<int> ranks;
     int maxRank = (int)uniqueScores.size(), j = 0;
     for(int i = 0; i < alice.size(); i++){
@@ -139,14 +152,14 @@ vector<int> climbingLeaderboard(vector<int> scores, vector<int> alice) {
 //
 
 int equalizeArray(vector<int> arr) {
+    //  Input: A vector of integers
+    //  Output: An integer of the minimum amount of deletions it would take to equalize the array
     int maxOccurence = 0, size = (int)arr.size();
     unordered_map<int,int> numToOccurence;
     
     for(int i = 0; i < size; i++){
         numToOccurence[arr[i]]++;
-        if(numToOccurence[arr[i]] > maxOccurence){
-            maxOccurence = numToOccurence[arr[i]];
-        }
+        if(numToOccurence[arr[i]] > maxOccurence) maxOccurence = numToOccurence[arr[i]];
     }
     
     return size - maxOccurence;
@@ -178,18 +191,25 @@ int equalizeArray(vector<int> arr) {
 //
 
 int countingValleys(int n, string s) {
+    //  Input: 
+    //      - n: An integer of how long the input string is
+    //      - s: A string of Ds and Us representing uphill/downhill steps
+    //  Output: An integer representing how many valleys have been hiked
     int altitude = 0, valleys = 0;
+    
     for(int step = 0; step < s.length(); step++){
         if(s[step] == 'U') altitude++;
         else altitude--;
         
         if(altitude == 0 && s[step] == 'U') valleys++;
     }
+    
     return valleys;
 }
 
 //
 //  Pairs - Medium
+//
 //  You will be given an array of integers and a target value. Determine the number of pairs
 //  of array elements that have a difference equal to a target value.
 //
@@ -201,12 +221,16 @@ int countingValleys(int n, string s) {
 //
 
 int pairs(int k, vector<int> arr) {
+    //  Input:
+    //      - k: An integer representing the target value
+    //      - arr: A vector of integers
+    //  Output: An integer of how many different pairs are present in the vector that add up
+    //          to the target value
     int numPairs = 0;
     unordered_map<int,int> numbers;
     
     for(int i = 0; i < arr.size(); i++){
-        auto it = numbers.find(arr[i]);
-        if(it == numbers.end()) numbers[arr[i]] = 1;
+        if(numbers.find(arr[i]) == numbers.end()) numbers[arr[i]] = 1;
         else return -1; // invalid entry
     }
     
@@ -250,16 +274,30 @@ int pairs(int k, vector<int> arr) {
 //
 
 bool valid(const vector<vector<int>> matrix, const int x, const int y){
+    //  Input:
+    //      - matrix: A 2D vector of integers representing a grid
+    //      - x: An integer representing an x-coordinate in the grid
+    //      - y: An integer representing a y-coordinate in the grid
+    //  Output: A boolean whether or not the place in the grid is valid
     return (x >= 0 && x < matrix.size() && y >= 0 && y < matrix[0].size() && matrix[x][y] == 1);
 }
 
 void findRegions(vector<vector<int>> &matrix, const int x, const int y, int &regionSize){
+    //  Input: 
+    //      - matrix: A 2D vector of integers representing a grid
+    //      - x: An integer representing an x-coordinate in the grid
+    //      - y: An integer representing a y-coordinate in the grid
+    //      - regionSize: An integer representing the current region's size
+    //  Output: No output, but this function changes the following variables via pass-by-reference
+    //      - matrix: If the x,y position is 1, change it to 0
+    //      - regionSize: If the x,y position is 1, increment the region size
     if(!valid(matrix, x, y)) return;
     
     regionSize++;
     
-    matrix[x][y] = 0;
+    matrix[x][y] = 0; //    Make sure not to revisit this coordinate again
     
+    //  Starting from -1 to 1 to search the surrounding area of the x,y coordinate
     for(int i = -1; i <= 1; i++){
         for(int j = -1; j <= 1; j++){
             findRegions(matrix, x + i, y + j, regionSize);
@@ -268,7 +306,10 @@ void findRegions(vector<vector<int>> &matrix, const int x, const int y, int &reg
 }
 
 int connectedCell(vector<vector<int>> matrix){
+    //  Input: A 2D vector of integers representing a grid
+    //  Output: An integer representing the largest region found in the input vector
     int maxRegion = 0;
+    
     for(int i = 0; i < matrix.size(); i++){
         for(int j = 0; j < matrix[0].size(); j++){
             int currentRegion = 0;
@@ -276,6 +317,7 @@ int connectedCell(vector<vector<int>> matrix){
             if(currentRegion > maxRegion) maxRegion = currentRegion;
         }
     }
+    
     return maxRegion;
 }
 
@@ -296,13 +338,17 @@ int connectedCell(vector<vector<int>> matrix){
 //
 
 int minimumAbsoluteDifference(vector<int> arr){
+    //  Input: An array of integers
+    //  Output: An integer representing the minimum difference between values in the input vector
     sort(arr.begin(), arr.end());
     int minimumDifference = INT_MAX;
+    
     for(int i = 0; i < arr.size(); i++){
         if(abs(arr[i] - arr[i + 1]) < minimumDifference){
             minimumDifference = abs(arr[i] - arr[i + 1]);
         }
     }
+    
     return minimumDifference;
 }
 
@@ -321,15 +367,23 @@ int minimumAbsoluteDifference(vector<int> arr){
 //
 
 vector<int> matchingStrings(vector<string> strings, vector<string> queries) {
+    //  Input:
+    //      - strings: A vector of strings. There can be duplicate values in here.
+    //      - queries: A vector of strings. No duplicate values.
+    //  Output: A vector of integers of how many times a value in queries appear in strings
     unordered_map<string,int> words;
+    //  Find how many times a given word appears in string using a hash map
     for(int i = 0; i < strings.size(); i++){
         words[strings[i]]++;
     }
     
     vector<int> results;
+    //  Walk through queries vector and look it up in the hash map
+    //  Push the value from the hash map into the results array
     for(int i = 0; i < queries.size(); i++){
-        results.push_back(words[queries[i]]);
+        results.push_back(words[queries[i]]); // If queries[i] is not in words, it will simply return a 0
     }
+    
     return results;
 }
 
@@ -351,10 +405,15 @@ vector<int> matchingStrings(vector<string> strings, vector<string> queries) {
 //
 
 bool has_cycle(SinglyLinkedListNode* head) {
+    //  Input: A singly linked list
+    //  Output: A boolean representing whether or not the list is circular
     SinglyLinkedListNode *slow, *fast;
     slow = head;
     fast = head;
     
+    //  Imagine two racers on a track field. If they are running endlessly in a circle, the fast runner will
+    //  run past the slow runner, at which point their positions are the same. If this is a 100m
+    //  race, the fast runner will reach the end before the slow runner, meaning this is not circular.
     while(fast != nullptr && fast->next != nullptr){
         fast = fast->next->next;
         slow = slow->next;
@@ -391,15 +450,20 @@ bool has_cycle(SinglyLinkedListNode* head) {
 //
 
 bool match(char leftBracket, char rightBracket){
+    //  Input:
+    //      - leftBracket: A character representing (, {, or [
+    //      - rightBracket: A character representing ), }, or ]
+    //  Output: A boolean returning if the left and right bracket match
     if(leftBracket == '(' && rightBracket != ')') return false;
     else if(leftBracket == '{' && rightBracket != '}') return false;
     else if(leftBracket == '[' && rightBracket != ']') return false;
-    
-    return true;
+    else return true;
 }
 
 string isBalanced(string s) {
-    stack<char> leftBrackets;
+    //  Input: A string consisting of (,{,[,],}, and )
+    //  Output: A YES/NO message representing that all brackets have succesfully closed
+    stack<char> leftBrackets; //    A stack of characters for (,{,[
     
     for(int i = 0; i < s.length(); i++){
         if(s[i] == '{' || s[i] == '[' || s[i] == '(') leftBrackets.push(s[i]);
@@ -411,4 +475,77 @@ string isBalanced(string s) {
     
     if(leftBrackets.empty()) return "YES";
     else return "NO";
+}
+
+//
+//  Find the Running Median - Hard
+//
+//  The median of a set of integers is the midpoint value of the data set for which an equal number
+//  of integers are less than and greater than the value. To find the median, you must first sort
+//  your set of integers in non-decreasing order, then:
+//
+//  - If your set contains an odd number of elements, the median is the middle element of the
+//  sorted sample. In the sorted set {1,2,3}, 2 is the median.
+//  - If your set contains an even number of elements, the median is the average of the two middle
+//  elements of the sorted sample. In the sorted set {1,2,3,4}, (2+3)/2 = 2.5 is the median.
+//
+//  Given an input stream of n integers, you must perform the following task for each ith integer:
+//  1. Add the ith integer to a running list of integers.
+//  2. Find the median of the updated list (i.e., for the first element through the ith element).
+//  3. Print the list's updated median on a new line. The printed value must be a double-precision
+//  number scaled to 1 decimal place (i.e., 12.3 format).
+//
+//  Big(O) -> O(nlogn), where n = size of the array
+//  Memory -> O(n), where n = size of the array
+//
+
+void addToHeaps(const double currentNum, const double median, priority_queue<double> &maxHeap, priority_queue<double, vector<double>, greater<double>> &minHeap){
+    //  Input:
+    //      - currentNum: A double representing the current number
+    //      - median: A double representing the median value
+    //      - maxHeap: A max heap of double values
+    //      - minHeap: A min heap of double values
+    //  Output: No output but pushes currentNum onto either maxHeap or minHeap depeneding on 
+    //          if the currentNum is less than or equal to the median
+    if(currentNum <= median) maxHeap.push(currentNum);
+    else minHeap.push(currentNum);
+}
+void changeHeapSizes(priority_queue<double> &maxHeap, priority_queue<double, vector<double>, greater<double>> &minHeap){
+    //  Input:
+    //      - maxHeap: A max heap of double values
+    //      - minHeap: A min heap of double values
+    //  Output: No output but pushes the top value from one heap to the other heap depending on 
+    //          the sizes of the heaps. Either heap should not be greater than 2. Once this has been done, 
+    //          the top value is popped off the heap.
+    if(maxHeap.size() > minHeap.size() + 1){
+        minHeap.push(maxHeap.top());
+        maxHeap.pop();
+    }else if(minHeap.size() > maxHeap.size() + 1){
+        maxHeap.push(minHeap.top());
+        minHeap.pop();
+    }
+}
+
+vector<double> runningMedian(vector<int> a) {
+    //  Input: A vector of integers
+    //  Output: A vector of doubles of all median values
+    priority_queue<double, vector<double>, greater<double>> minHeap;
+    priority_queue<double> maxHeap;
+    vector<double> allMedians;
+    double currentMedian = 0;
+    
+    for(int i = 0; i < a.size(); i++){
+        addToHeaps((double) a[i], currentMedian, maxHeap, minHeap);
+        changeHeapSizes(maxHeap, minHeap);
+        
+        //  Calculate current median
+        if(minHeap.size() == maxHeap.size()) currentMedian = (minHeap.top() + maxHeap.top())/2;
+        else if(minHeap.size() > maxHeap.size()) currentMedian = minHeap.top();
+        else currentMedian = maxHeap.top();
+        
+        //  Push current median into vector
+        allMedians.push_back(currentMedian);
+    }
+    
+    return allMedians;
 }
